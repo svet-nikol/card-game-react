@@ -23,6 +23,11 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+        <div className={styles.checkboxWrap}>
+          {" "}
+          <input type="checkbox" name="light-mode" id="light-mode" />{" "}
+          <label htmlFor="light-mode">Легкий режим (3 жизни)</label>
+        </div>
       </div>
     </div>
   );
