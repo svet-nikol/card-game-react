@@ -1,8 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import styles from "./Button.module.css";
 
-export function Button({ children, onClick }) {
+export function Button({ children, onClick, to }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (to) {
+      navigate(to);
+    }
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <button onClick={onClick} className={styles.button}>
+    <button onClick={handleClick} className={styles.button}>
       {children}
     </button>
   );
