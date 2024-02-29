@@ -70,3 +70,12 @@
 
   margin-bottom: -12px;
 }
+
+.numberOfTriesText {
+  font-size: 30px;
+  line-height: 30px;
+  margin-top: 10px;
+  margin-bottom: 34px;
+  color: #fff;
+  font-family: StratosSkyeng;
+}

@@ -118,7 +118,7 @@
   width: 22px;
   height: 17px;
   vertical-align: middle;
-  opacity: 0;
+  opacity: 0.1;
 }
 
 .checkboxWrap input[type="checkbox"]:checked + label::after {

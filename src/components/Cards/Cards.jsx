@@ -57,6 +57,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  const [numberOfTries, setNumberOfTries] = useState(3);
+  const countdownOfTries = () => {
+    setNumberOfTries(prev => prev - 1);
+  };
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -123,7 +128,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
+    if (openCardsWithoutPair.length >= 2 && numberOfTries !== 0) {
+      countdownOfTries();
+      openCardsWithoutPair.forEach(card => (card.open = false));
+    }
+
+    console.log(openCardsWithoutPair);
+
+    const playerLost = numberOfTries <= 1 && openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
@@ -201,6 +213,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           </Button>
         ) : null}
       </div>
+
+      {status === STATUS_IN_PROGRESS ? (
+        <p className={styles.numberOfTriesText}>Осталось попыток: {numberOfTries}</p>
+      ) : (
+        <p className={styles.numberOfTriesText}>У вас будет попыток угадать: {numberOfTries}</p>
+      )}
 
       <div className={styles.cards}>
         {cards.map(card => (
