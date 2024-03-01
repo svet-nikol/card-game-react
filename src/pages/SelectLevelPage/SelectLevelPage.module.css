@@ -49,16 +49,77 @@
 }
 
 .levelLink {
-  color: #0080c1;
   text-align: center;
   font-family: StratosSkyeng;
   font-size: 64px;
   font-style: normal;
   font-weight: 400;
-  line-height: 72px;
+  line-height: 98px;
   text-decoration: none;
+  color: #0080c1;
+}
+.levelLink:hover {
+  background-color: #7ac100;
+  border: 1px solid #7ac100;
+  border-radius: 12px;
 }
 
 .levelLink:visited {
   color: #0080c1;
 }
+.levelLink:visited:hover {
+  color: #fff;
+}
+
+/* .checkboxWrap {
+  margin-bottom: 38px;
+} */
+
+.checkboxWrap input[type="checkbox"]:checked,
+.checkboxWrap input[type="checkbox"]:not(:checked) {
+  position: absolute;
+  left: -9999px;
+}
+
+.checkboxWrap input[type="checkbox"]:checked + label,
+.checkboxWrap input[type="checkbox"]:not(:checked) + label {
+  font-display: inline-block;
+  position: relative;
+  padding-left: 42px;
+  line-height: 32px;
+  color: rgb(0, 0, 0);
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.checkboxWrap input[type="checkbox"]:checked + label::before,
+.checkboxWrap input[type="checkbox"]:not(:checked) + label::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 30px;
+  height: 29px;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+
+.checkboxWrap input[type="checkbox"]:checked + label::after,
+.checkboxWrap input[type="checkbox"]:not(:checked) + label::after {
+  position: absolute;
+  content: "";
+  background: url('../../../public/assets/img/Vector.svg');
+  left: 4px;
+  top: 6px;
+  width: 22px;
+  height: 17px;
+  vertical-align: middle;
+  opacity: 0.1;
+}
+
+.checkboxWrap input[type="checkbox"]:checked + label::after {
+opacity: 1;}

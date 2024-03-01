@@ -5,6 +5,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useTriers } from "../../hooks/useTriers";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -57,6 +58,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  // получаем из контекста данные о включенном легком режиме, а именно стейт о количестве допустимых ошибок и функцию его снижения
+  const { numberOfTries, setNumberOfTries, countdownOfTries } = useTriers();
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -72,6 +76,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
+    setNumberOfTries(1); // возвращаем количество допустимых ошибок по-умолчанию
     setStatus(STATUS_PREVIEW);
   }
 
@@ -123,9 +128,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
+    // Если массив открытых карт не парных карт больше двух объектов и кол-во попыток не равно нулю, то карты закрыть обратно и сократить попытки на 1
+    if (openCardsWithoutPair.length >= 2 && numberOfTries !== 0) {
+      countdownOfTries();
+      openCardsWithoutPair.forEach(card => (card.open = false));
+    }
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+    const playerLost = numberOfTries <= 1 && openCardsWithoutPair.length >= 2;
+
+    // "Игрок проиграл", т.к на поле есть две открытые карты без пары и попытки исчерпались
     if (playerLost) {
       finishGame(STATUS_LOST);
       return;
@@ -195,8 +206,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <Button onClick={resetGame} to="/">
+            Начать заново
+          </Button>
+        ) : null}
       </div>
+
+      {status !== STATUS_PREVIEW ? <p className={styles.numberOfTriesText}>Осталось попыток: {numberOfTries}</p> : null}
 
       <div className={styles.cards}>
         {cards.map(card => (

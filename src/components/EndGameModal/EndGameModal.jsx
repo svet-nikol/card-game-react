@@ -21,7 +21,9 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
       </div>
 
-      <Button onClick={onClick}>Начать сначала</Button>
+      <Button onClick={onClick} to="/">
+        Начать сначала
+      </Button>
     </div>
   );
 }
