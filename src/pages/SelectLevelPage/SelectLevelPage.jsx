@@ -47,6 +47,7 @@ export function SelectLevelPage() {
           />{" "}
           <label htmlFor="easy-mode">Легкий режим (3 жизни)</label>
         </div>
+        <Link to="/leaderboard">Перейти к лидерборду</Link>
       </div>
     </div>
   );
