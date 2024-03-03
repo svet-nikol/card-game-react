@@ -237,6 +237,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
             gameTimeSec={difference}
+            pairsCount={pairsCount}
           />
         </div>
       ) : null}

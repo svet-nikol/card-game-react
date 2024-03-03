@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 export const LeadersContext = createContext(null);
 
 export const LeadersProvider = ({ children }) => {
-  const [leadersList, setLeadersList] = useState(null);
+  const [leadersList, setLeadersList] = useState([]);
 
   const getLeaders = leaders => {
     setLeadersList(leaders);

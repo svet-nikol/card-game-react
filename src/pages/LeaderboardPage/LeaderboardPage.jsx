@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../../components/Button/Button";
 import { getLeadersApi } from "../../api";
 import { useLeaders } from "../../hooks/useLeaders";
+import styles from "./LeaderboardPage.module.css";
 
 export function LeaderboardPage() {
   const { leadersList, setLeadersList } = useLeaders();
@@ -17,19 +18,25 @@ export function LeaderboardPage() {
       });
   }, [setLeadersList]);
 
+  //   console.log(leadersList);
+
   const sortedLeadersList = [...leadersList].sort((a, b) => a.time - b.time);
 
   return (
-    <div className="">
-      <p>Лидерборд</p>
-      <Button to="/">Начать игру</Button>
-      <div className="">
+    <div className={styles.container}>
+      <div className={styles.header}>
+        {" "}
+        <p>Лидерборд</p>
+        <Button to="/">Начать игру</Button>
+      </div>
+
+      <div className={styles.listWrap}>
         {getLeadersError ? (
           <p style={{ color: "red" }}>{getLeadersError}</p>
         ) : (
           leadersList &&
           sortedLeadersList.map((item, index) => (
-            <div style={{ display: "flex", color: "white", gap: "30px" }} key={item.id}>
+            <div className={styles.listItem} key={item.id}>
               <p># {index + 1}</p>
               <p>{item.name}</p>
               <p>{item.time}</p>

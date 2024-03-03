@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useTriers } from "../../hooks/useTriers";
 import { useState } from "react";
+import { LinkSt } from "../../components/LinkSt/LinkSt";
 
 export function SelectLevelPage() {
   const triersForEasyMode = 3;
@@ -47,7 +48,7 @@ export function SelectLevelPage() {
           />{" "}
           <label htmlFor="easy-mode">Легкий режим (3 жизни)</label>
         </div>
-        <Link to="/leaderboard">Перейти к лидерборду</Link>
+        <LinkSt to="/leaderboard">Перейти к лидерборду</LinkSt>
       </div>
     </div>
   );
