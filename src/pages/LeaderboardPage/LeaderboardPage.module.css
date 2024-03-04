@@ -37,7 +37,7 @@
   display: flex;
   color: #000000;
   background-color: #ffffff;
-  width: 100%;
+  max-width: 944px;
   border-radius: 12px;
   height: 64px;
   font-size: 24px;
@@ -47,4 +47,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 0px 20px;
+}
+
+.ItemPosition {
+  width: 178px;
+}
+
+.ItemUser {
+  width: 324px;
+}
+
+.ItemAchiev {
+  width: 102px;
+}
+
+.ItemTime {
+  width: 102px;
 }

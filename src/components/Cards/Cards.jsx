@@ -60,7 +60,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
-  // получаем из контекста данные о включенном легком режиме, а именно стейт о количестве допустимых ошибок и функцию его снижения
+  // Получаем из контекста данные о включенном легком режиме, а именно стейт о количестве допустимых ошибок и функцию его снижения
   const { numberOfTries, setNumberOfTries, countdownOfTries } = useTriers();
 
   function finishGame(status = STATUS_LOST) {

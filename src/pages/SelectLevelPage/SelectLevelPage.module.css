@@ -71,10 +71,6 @@
   color: #fff;
 }
 
-/* .checkboxWrap {
-  margin-bottom: 38px;
-} */
-
 .checkboxWrap input[type="checkbox"]:checked,
 .checkboxWrap input[type="checkbox"]:not(:checked) {
   position: absolute;
