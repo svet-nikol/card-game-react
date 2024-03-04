@@ -52,7 +52,7 @@ export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount }) {
       <h2 className={styles.title}>{title}</h2>
 
       {isWon ? (
-        pairsCount === 9 ? null : (
+        pairsCount !== 9 ? null : (
           <>
             <form onSubmit={handleNewLeaderAdd}>
               <input
@@ -75,7 +75,7 @@ export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount }) {
         Начать снова
       </Button>
 
-      {isWon ? pairsCount === 9 ? null : <LinkSt onClick={handleNewLeaderAdd}>Перейти к лидерборду</LinkSt> : null}
+      {isWon ? pairsCount !== 9 ? null : <LinkSt onClick={handleNewLeaderAdd}>Перейти к лидерборду</LinkSt> : null}
     </div>
   );
 }
