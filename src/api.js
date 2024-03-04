@@ -22,7 +22,10 @@ export async function addPlayerDataApi({ name, time }) {
     }),
   });
   if (response.status === 400) {
-    throw new Error("Ошибка формата введеных данных");
+    throw new Error("Введите имя пользователя");
+  }
+  if (response.status !== 201) {
+    throw new Error("Ошибка сервера");
   }
   const updateLeaders = await response.json();
   return updateLeaders;

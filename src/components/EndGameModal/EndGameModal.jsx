@@ -1,7 +1,5 @@
 import styles from "./EndGameModal.module.css";
-
 import { Button } from "../Button/Button";
-
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +7,9 @@ import { useState } from "react";
 import { addPlayerDataApi } from "../../api";
 import { useLeaders } from "../../hooks/useLeaders";
 import { LinkSt } from "../LinkSt/LinkSt";
+import { formatTime } from "../../utils/formatTime";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, gameTimeSec, pairsCount }) {
+export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount }) {
   const title = isWon ? (pairsCount !== 9 ? "Вы выиграли" : "Вы попали на Лидерборд!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
@@ -34,7 +33,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const navigate = useNavigate();
 
   const handleNewLeaderAdd = async e => {
-    // e.preventDefault();
     try {
       const data = await addPlayerDataApi({
         name: newLeader.name,
@@ -44,7 +42,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       navigate("/leaderboard");
     } catch (error) {
       setNewLeaderFormError(error.message);
-      console.log(newLeaderFormError);
+      console.log(error.message);
     }
   };
 
@@ -54,32 +52,30 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       <h2 className={styles.title}>{title}</h2>
 
       {isWon ? (
-        pairsCount !== 9 ? null : (
-          <form onSubmit={handleNewLeaderAdd}>
-            {" "}
-            <input
-              className={styles.input}
-              onChange={handleInputChange}
-              placeholder="Пользователь"
-              name="name"
-              value={newLeader.name}
-            />
-          </form>
+        pairsCount === 9 ? null : (
+          <>
+            <form onSubmit={handleNewLeaderAdd}>
+              <input
+                className={styles.input}
+                onChange={handleInputChange}
+                placeholder="Пользователь"
+                name="name"
+                value={newLeader.name}
+              />
+            </form>
+            {newLeaderFormError && <p className={styles.errorMessage}>{newLeaderFormError}</p>}
+          </>
         )
       ) : null}
 
       <p className={styles.description}>Затраченное время:</p>
-      <div className={styles.time}>
-        {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
-      </div>
+      <div className={styles.time}>{formatTime(gameTimeSec)}</div>
 
       <Button onClick={onClick} to="/">
         Начать снова
       </Button>
 
-      {isWon ? pairsCount !== 9 ? null : <LinkSt onClick={handleNewLeaderAdd}>Перейти к лидерборду</LinkSt> : null}
+      {isWon ? pairsCount === 9 ? null : <LinkSt onClick={handleNewLeaderAdd}>Перейти к лидерборду</LinkSt> : null}
     </div>
   );
 }
-
-// {newLeaderFormError ? (<p style={{ color: "red" }}>{newLeaderFormError}</p> ) : (
