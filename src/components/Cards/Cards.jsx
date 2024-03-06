@@ -52,13 +52,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
 
+  const difference = Math.floor((gameEndDate - gameStartDate) / 1000);
+
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
   });
 
-  // получаем из контекста данные о включенном легком режиме, а именно стейт о количестве допустимых ошибок и функцию его снижения
+  // Получаем из контекста данные о включенном легком режиме, а именно стейт о количестве допустимых ошибок и функцию его снижения
   const { numberOfTries, setNumberOfTries, countdownOfTries } = useTriers();
 
   function finishGame(status = STATUS_LOST) {
@@ -231,9 +233,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
-            gameDurationSeconds={timer.seconds}
-            gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            gameTimeSec={difference}
+            pairsCount={pairsCount}
           />
         </div>
       ) : null}
