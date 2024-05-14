@@ -9,7 +9,7 @@ import { useLeaders } from "../../hooks/useLeaders";
 import { LinkSt } from "../LinkSt/LinkSt";
 import { formatTime } from "../../utils/formatTime";
 
-export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount, isHardMode }) {
+export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount, isHardMode, isUsedSuperpower }) {
   const title = isWon ? (pairsCount !== 9 ? "Вы выиграли" : "Вы попали на Лидерборд!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
@@ -34,11 +34,20 @@ export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount, isHardMo
 
   const handleNewLeaderAdd = async e => {
     try {
+      let newAchievements = [];
+      if (isHardMode && isUsedSuperpower) {
+        newAchievements = [1, 2];
+      } else if (isHardMode) {
+        newAchievements = [1];
+      } else if (isUsedSuperpower) {
+        newAchievements = [2];
+      }
       const data = await addPlayerDataApi({
         name: newLeader.name,
         time: newLeader.time,
-        achievements: [isHardMode],
+        achievements: newAchievements,
       });
+
       getLeaders(data.leaders);
       navigate("/leaderboard");
     } catch (error) {

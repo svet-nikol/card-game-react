@@ -8,6 +8,7 @@ import { Card } from "../../components/Card/Card";
 import { useTriers } from "../../hooks/useTriers";
 import alohomoraImgUrl from "./images/Alohomora.png";
 import epiphanyImgUrl from "./images/Epiphany.png";
+import getTimerValue from "../../utils/getTimerValue";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -19,27 +20,6 @@ const STATUS_PREVIEW = "STATUS_PREVIEW";
 
 const imgSrcAlohomora = alohomoraImgUrl;
 const imgSrcEpiphany = epiphanyImgUrl;
-
-function getTimerValue(startDate, endDate) {
-  if (!startDate && !endDate) {
-    return {
-      minutes: 0,
-      seconds: 0,
-    };
-  }
-
-  if (endDate === null) {
-    endDate = new Date();
-  }
-
-  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
-  const minutes = Math.floor(diffInSecconds / 60);
-  const seconds = diffInSecconds % 60;
-  return {
-    minutes,
-    seconds,
-  };
-}
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -67,6 +47,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Получаем из контекста данные о включенном легком режиме, а именно стейт о количестве допустимых ошибок и функцию его снижения
   const { numberOfTries, setNumberOfTries, countdownOfTries } = useTriers();
+  // Стейт для передачи на лидерборд достижения Игра пройдена в сложном режиме
+  const [isHardMode, setIsHardMode] = useState(false);
+  // Стейт для передачи на лидерборд достижения "Игра пройдена без супер-сил"
+  const [hasPerformedAlohomora, setHasPerformedAlohomora] = useState(false);
+  // const [hasPerformedEpiphany, setHasPerformedEpiphany] = useState(null);
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -78,6 +63,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setIsHardMode(numberOfTries === 1 ? true : false);
   }
   function resetGame() {
     setGameStartDate(null);
@@ -154,6 +140,38 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
+  const alohomoraSuperpower = () => {
+    if (!hasPerformedAlohomora) {
+      const closedCards = cards.filter(card => !card.open);
+      const closedCardsWithPair = closedCards.filter(card => {
+        const sameCards = closedCards.filter(
+          closedCard => card.suit === closedCard.suit && card.rank === closedCard.rank,
+        );
+        if (sameCards.length < 2) {
+          return false;
+        }
+        return true;
+      });
+      const randomIndex = Math.floor(Math.random() * closedCardsWithPair.length);
+      const randomCard = closedCardsWithPair[randomIndex];
+      const pair = closedCardsWithPair.filter(card => card.suit === randomCard.suit && card.rank === randomCard.rank);
+      // Устанавливаем для выбранных карт значение open: true
+      [randomCard, ...pair].forEach(card => {
+        card.open = true;
+      });
+
+      // Перезаписываем массив карт в состоянии с помощью setCards
+      setCards(prevCards => [
+        ...prevCards.map(prevCard =>
+          [randomCard, ...pair].some(pairedCard => pairedCard.id === prevCard.id)
+            ? { ...prevCard, open: true }
+            : prevCard,
+        ),
+      ]);
+      setHasPerformedAlohomora(true);
+    }
+  };
+
   // Игровой цикл
   useEffect(() => {
     // В статусах кроме превью доп логики не требуется
@@ -219,7 +237,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               <button className={styles.btnPower}>
                 <img src={imgSrcEpiphany} alt={"epiphany"} />
               </button>
-              <button className={styles.btnPower}>
+              <button className={styles.btnPower} onClick={alohomoraSuperpower}>
                 <img src={imgSrcAlohomora} alt={"alohomora"} />
               </button>
             </div>
@@ -251,7 +269,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             onClick={resetGame}
             gameTimeSec={difference}
             pairsCount={pairsCount}
-            isHardMode={numberOfTries === 1 ? 1 : null}
+            isHardMode={isHardMode}
+            isUsedSuperpower={!hasPerformedAlohomora}
           />
         </div>
       ) : null}
