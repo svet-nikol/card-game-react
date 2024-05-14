@@ -1,7 +1,7 @@
-const API_URL = "https://wedev-api.sky.pro/api/leaderboard";
+const API_URLV2 = "https://wedev-api.sky.pro/api/v2/leaderboard";
 
 export async function getLeadersApi() {
-  const response = await fetch(API_URL, {
+  const response = await fetch(API_URLV2, {
     method: "GET",
   });
 
@@ -13,12 +13,13 @@ export async function getLeadersApi() {
   return data;
 }
 
-export async function addPlayerDataApi({ name, time }) {
-  const response = await fetch(API_URL, {
+export async function addPlayerDataApi({ name, time, achievements }) {
+  const response = await fetch(API_URLV2, {
     method: "POST",
     body: JSON.stringify({
       name,
       time,
+      achievements,
     }),
   });
   if (response.status === 400) {
