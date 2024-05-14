@@ -6,6 +6,8 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useTriers } from "../../hooks/useTriers";
+import alohomoraImgUrl from "./images/Alohomora.png";
+import epiphanyImgUrl from "./images/Epiphany.png";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -14,6 +16,9 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+
+const imgSrcAlohomora = alohomoraImgUrl;
+const imgSrcEpiphany = epiphanyImgUrl;
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -209,9 +214,19 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           )}
         </div>
         {status === STATUS_IN_PROGRESS ? (
-          <Button onClick={resetGame} to="/">
-            Начать заново
-          </Button>
+          <>
+            <div className={styles.btnPowers}>
+              <button className={styles.btnPower}>
+                <img src={imgSrcEpiphany} alt={"epiphany"} />
+              </button>
+              <button className={styles.btnPower}>
+                <img src={imgSrcAlohomora} alt={"alohomora"} />
+              </button>
+            </div>
+            <Button onClick={resetGame} to="/">
+              Начать заново
+            </Button>
+          </>
         ) : null}
       </div>
 
@@ -236,6 +251,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             onClick={resetGame}
             gameTimeSec={difference}
             pairsCount={pairsCount}
+            isHardMode={numberOfTries === 1 ? 1 : null}
           />
         </div>
       ) : null}

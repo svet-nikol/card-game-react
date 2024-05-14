@@ -44,7 +44,8 @@
   font-weight: 400;
   line-height: 32px;
   font-family: StratosSkyeng;
-  justify-content: space-between;
+  gap: 66px;
+  /* justify-content: space-between; */
   align-items: center;
   padding: 0px 20px;
 }
@@ -54,15 +55,24 @@
 }
 
 .ItemUser {
-  width: 324px;
+  width: 227px;  
+}
+
+.ItemUserInner {
+  margin-right: 48px;
+  width: 180px;
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .ItemAchiev {
-  width: 102px;
+  width: 194px;
 }
 
 .ItemTime {
-  width: 102px;
+  width: 92px;
 }
 
 .errorMessage {

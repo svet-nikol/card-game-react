@@ -9,7 +9,7 @@ import { useLeaders } from "../../hooks/useLeaders";
 import { LinkSt } from "../LinkSt/LinkSt";
 import { formatTime } from "../../utils/formatTime";
 
-export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount }) {
+export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount, isHardMode }) {
   const title = isWon ? (pairsCount !== 9 ? "Вы выиграли" : "Вы попали на Лидерборд!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
@@ -37,6 +37,7 @@ export function EndGameModal({ isWon, onClick, gameTimeSec, pairsCount }) {
       const data = await addPlayerDataApi({
         name: newLeader.name,
         time: newLeader.time,
+        achievements: [isHardMode],
       });
       getLeaders(data.leaders);
       navigate("/leaderboard");

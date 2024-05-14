@@ -19,6 +19,8 @@
   border: none;
 
   cursor: pointer;
+
+  margin-bottom: 12px;
 }
 
 .button:hover {
