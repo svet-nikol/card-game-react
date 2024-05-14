@@ -51,7 +51,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const [isHardMode, setIsHardMode] = useState(false);
   // Стейт для передачи на лидерборд достижения "Игра пройдена без супер-сил"
   const [hasPerformedAlohomora, setHasPerformedAlohomora] = useState(false);
-  // const [hasPerformedEpiphany, setHasPerformedEpiphany] = useState(null);
+  // const [hasPerformedEpiphany, setHasPerformedEpiphany] = useState(false);
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -155,12 +155,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       const randomIndex = Math.floor(Math.random() * closedCardsWithPair.length);
       const randomCard = closedCardsWithPair[randomIndex];
       const pair = closedCardsWithPair.filter(card => card.suit === randomCard.suit && card.rank === randomCard.rank);
-      // Устанавливаем для выбранных карт значение open: true
       [randomCard, ...pair].forEach(card => {
         card.open = true;
       });
-
-      // Перезаписываем массив карт в состоянии с помощью setCards
       setCards(prevCards => [
         ...prevCards.map(prevCard =>
           [randomCard, ...pair].some(pairedCard => pairedCard.id === prevCard.id)
@@ -171,6 +168,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       setHasPerformedAlohomora(true);
     }
   };
+
+  // const epiphanySuperpower = () => {
+  //   if (!hasPerformedEpiphany) {
+  //     setHasPerformedEpiphany(true);
+  //   }
+  // };
 
   // Игровой цикл
   useEffect(() => {
@@ -237,6 +240,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               <button className={styles.btnPower}>
                 <img src={imgSrcEpiphany} alt={"epiphany"} />
               </button>
+
               <button className={styles.btnPower} onClick={alohomoraSuperpower}>
                 <img src={imgSrcAlohomora} alt={"alohomora"} />
               </button>
